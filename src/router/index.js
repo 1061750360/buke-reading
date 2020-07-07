@@ -1,22 +1,52 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/store'
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/book',
+    component: () => import('../views/book/book.vue'),
+    children: [
+      {
+        path: ':fileName',
+        component: () => import('../components/book/BookReader.vue')
+      }
+    ]
+  },
+  {
+    path: '/store',
+    component: () => import('../views/store/Index.vue'),
+    redirect: '/store/home',
+    children: [
+      {
+        path: 'home',
+        component: () => import('../views/store/StoreHome.vue'),
+        meta: {
+          keepAlive: true // 需要缓存
+        }
+      },
+      {
+        path: 'list',
+        component: () => import('../views/store/BookList.vue'),
+        meta: {
+          keepAlive: false // 不需要缓存
+        }
+      },
+      {
+        name: 'detail',
+        path: 'detail',
+        component: () => import('../views/store/BookDetail.vue')
+      },
+      {
+        path: 'shelf',
+        component: () => import('../views/store/StoreShelf.vue')
+      }
+    ]
   }
 ]
 

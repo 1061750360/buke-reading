@@ -3,8 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <script>
+        (function (doc, win) {
+            const docEl = doc.documentElement;
+            const resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+            const recalc = function () {
+                let clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                const fontSize = clientWidth / 10;
+                docEl.style.fontSize = (fontSize > 50 ? 50 : fontSize) + 'px';
+            };
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+    </script>
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
